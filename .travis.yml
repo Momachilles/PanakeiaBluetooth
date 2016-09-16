@@ -1,9 +1,8 @@
 language: objective-c  #1
 os: osx
 osx_image: xcode8 #2
-project: PanakeiaBluetooth/PanakeiaBluetooth.xcodeproj #3
-scheme: PanakeiaBluetooth
-platform='iOS Simulator,OS=10.0,name=iPhone SE'
+env:
+ - project= 'PanakeiaBluetooth/PanakeiaBluetooth.xcodeproj' scheme= 'PanakeiaBluetooth' platform='iOS Simulator,OS=10.0,name=iPhone SE'
 
 script: |
 
