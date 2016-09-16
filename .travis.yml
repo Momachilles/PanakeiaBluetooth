@@ -1,5 +1,32 @@
 language: objective-c  #1
+os: osx
 osx_image: xcode8 #2
-xcode_project: PanakeiaBluetooth/PanakeiaBluetooth.xcodeproj #3
-xcode_scheme: PanakeiaBluetooth
-xcode_sdk: iphoneos10.0
+project: PanakeiaBluetooth/PanakeiaBluetooth.xcodeproj #3
+scheme: PanakeiaBluetooth
+platform='iOS Simulator,OS=10.0,name=iPhone SE'
+
+script: |
+
+  # ------ Tools ------
+  set -x
+  git clone https://github.com/supermarin/xcpretty.git /tmp/xcpretty
+  #brew update
+  #brew install carthage
+
+  # ------ Project build ------
+  echo
+  echo —————— Running tests for $platform ...
+  echo
+  Siesta_DelayAfterEachSpec=1 \
+  Siesta_TestMultipleNetworkProviders=1 \
+  xcodebuild test \
+      -project "$project" \
+      -scheme "$scheme" \
+      -destination "platform=$platform" \
+    | /tmp/xcpretty/bin/xcpretty -c
+  
+  buildresult=${PIPESTATUS[0]}
+  echo —————— Completed tests for $platform.
+  sleep 5  # Workaround for Travis log truncation
+  exit $buildresult
+
